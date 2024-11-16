@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Routes, Route } from 'react-router-dom';
+import Home from './Pages/Home';
+import Onetimeverify from "./Pages/Onetimeverify"
+import AccountVerify from './Pages/AccountVerify';
+import PanVerify from './Pages/PanVerify';
+import CustomerVerify from './Pages/CustomerVerify';
+import HomeCard from './Pages/HomeCard';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/homecard" element={<HomeCard />} />
+          <Route path="/onetimeverify" element={<Onetimeverify />} />
+          <Route path="/accountverify" element={<AccountVerify />} />
+          <Route path="/panverify" element={<PanVerify />} />
+          <Route path="/customerverify" element={<CustomerVerify />} />
+       </Routes>
+    </>
   );
 }
 
