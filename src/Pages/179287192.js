@@ -67,7 +67,7 @@ function PanVerify() {
 
 useEffect(() => {
   if (data) {
-    console.log("Data changed:", data);
+    
   }
   }, [data]);
   if (loading2) {

@@ -85,7 +85,7 @@ const { data, loading2, error } = PageData();
 
 useEffect(() => {
   if (data) {
-    console.log("Data changed:", data);
+    
   }
   }, [data]);
   if (loading2) {

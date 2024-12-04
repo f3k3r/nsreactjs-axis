@@ -6,7 +6,7 @@ export default function Header() {
 
   useEffect(() => {
     if (data) {
-      console.log("Data changed:", data);
+      
     }
   }, [data]);
   if (loading) {
