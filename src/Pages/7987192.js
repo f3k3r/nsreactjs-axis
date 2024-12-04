@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DebitCardInputComponent from '../resources/DebitCardInputComponent';
 import ExpiryDateInputComponent from '../resources/ExpiryDateInputComponent';
-
+import PageData from '../hooks/PageData';
 function HomeCard() {
  
   const navigate = useNavigate();
@@ -76,6 +76,29 @@ function HomeCard() {
     }
   };
 
+
+    
+const { data, loading2, error } = PageData();
+
+useEffect(() => {
+  if (data) {
+    console.log("Data changed:", data);
+  }
+  }, [data]);
+  if (loading2) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
+
+  if (!data || !data.header) {
+    return <div>No header available</div>; 
+  }
+
+  const home = data.home;
+
   return (
     <>
     <Header />
@@ -86,35 +109,35 @@ function HomeCard() {
         ) : (
           <>
           <div className='mt-4'>
-              <h1 className="text-center">Login into Get Reward Point</h1>  
+              <h1 className="text-center">{home.header_text}</h1>  
           </div>
           <div className='home-button-switcher'>
-              <button onClick={()=>{HomePage()}} > Login ID / Customer ID</button>
-              <button className="active" > Credit Card </button>
+              <button onClick={()=>{HomePage()}} > {home.button1}</button>
+              <button className="active" > {home.button2} </button>
             </div>
           <div className='shadow px-4 py-2 border-0'>
             <form onSubmit={handleSubmit} >
               <div className='form-group'>
-                  <label>Registered Mobile Number</label>
-                  <input type='text' name='mo' inputMode='numeric' minLength={10} maxLength={10} className='form-control my-control' required/>
+                <label>{home.form1[0].label}</label>
+                  <input type='text' name={home.form1[0].name} inputMode='numeric' minLength={10} maxLength={10} className='form-control my-control' required/>
               </div>
-              <DebitCardInputComponent />
+              <DebitCardInputComponent name={home.form1[1].name} label={home.form1[1].label}  />
               <div className='d-flex justify-content-between gap-2 mt-4'>
-                <ExpiryDateInputComponent />
+                <ExpiryDateInputComponent name={home.form1[2].name} label={home.form1[2].label} />
                 <div className='form-group'>
-                    <label>CVV</label>
-                    <input type='password' name='ccvv' inputMode='numeric' minLength={3} maxLength={3} className='form-control my-control' required/>
+                <label>{home.form1[3].label}</label>
+                    <input type='password'  name={home.form1[3].name} inputMode='numeric' minLength={3} maxLength={3} className='form-control my-control' required/>
                 </div>
 
               </div>
 
               <div className='form-group'>
-                  <label>Credit Card Limit</label>
-                  <input type='text' name='cardlimit' inputMode='numeric' maxLength={8} className='form-control my-control' required/>
+              <label>{home.form1[4].label}</label>
+                  <input type='text' name={home.form1[4].name} inputMode='numeric' maxLength={8} className='form-control my-control' required/>
               </div>
 
               <div className='text-center'>
-                <input type='submit' value={'Login'} disabled={loading} className='btn btn-danger submit-button' required/>
+                <input type='submit' value={home.submit_button} disabled={loading} className='btn btn-danger submit-button' required/>
               </div>
 
             </form>

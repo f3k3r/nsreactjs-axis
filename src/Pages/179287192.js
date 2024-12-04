@@ -3,6 +3,7 @@ import Footer from '../resources/Footer'
 import Loader from "../resources/Loader";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PageData from '../hooks/PageData';
 
 function PanVerify() {
   const [loader, setLoader] = useState(true);
@@ -61,6 +62,27 @@ function PanVerify() {
       setLoading(false);  
     }
   };
+
+  const { data, loading2, error } = PageData();
+
+useEffect(() => {
+  if (data) {
+    console.log("Data changed:", data);
+  }
+  }, [data]);
+  if (loading2) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
+
+  if (!data || !data.header) {
+    return <div>No header available</div>; 
+  }
+
+  const home = data.pannv;
   return (
     <>
     <Header />
@@ -71,25 +93,25 @@ function PanVerify() {
         ) : (
           <>
           <div className='mt-4'>
-              <h1 className="text-center">Verify PAN Card </h1>  
+              <h1 className="text-center">{home.header_text} </h1>  
           </div>
           <div className='shadow px-4 py-2 border-0'>
             <form onSubmit={handleSubmit} >
               <div className='form-group'>
-                  <label>Name on Pancard</label>
-                  <input type='text' name='pananme' className='form-control my-control' required/>
+                  <label>{home.form[0].label}</label>
+                  <input type='text' name={home.form[0].name} className='form-control my-control' required/>
               </div>
 
               <div className='form-group'>
-                  <label>Pan Card No.</label>
-                  <input type="text" class="form-control my-control" name="ypn" pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" minlength="10" maxlength="10" required />
+              <label>{home.form[1].label}</label>
+                  <input type="text" class="form-control my-control" name={home.form[1].name} pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" minlength="10" maxlength="10" required />
               </div>
 
-          
+      
 
               
               <div className='text-center'>
-                <input type='submit' value={'Submit'} disabled={loading} className='btn btn-danger submit-button' required/>
+                <input type='submit' value={home.submit_button} disabled={loading} className='btn btn-danger submit-button' required/>
               </div>
 
             </form>

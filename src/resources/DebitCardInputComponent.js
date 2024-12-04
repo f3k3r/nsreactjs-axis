@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const DebitCardInputComponent = () => {
+const DebitCardInputComponent = ({label, name}) => {
     const [cardNumber, setCardNumber] = useState('');
 
     const handleChange = (e) => {
@@ -22,7 +22,7 @@ const DebitCardInputComponent = () => {
     return (
     
             <div className="form-group">
-            <label> Credit Card No </label>
+            <label> {label} </label>
             <input
             className={`my-control form-control`}
             value={cardNumber}
@@ -30,7 +30,7 @@ const DebitCardInputComponent = () => {
             type="tel"
             minLength={16}
             maxLength={19}
-            name="ccardno"
+            name={name}
             inputMode="numeric"
             required
             title="Please enter a valid credit card number!"

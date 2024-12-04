@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const ExpiryDateInputComponent = () => {
+const ExpiryDateInputComponent = ({label, name}) => {
     const [expiryDate, setExpiryDate] = useState('');
 
     const formatExpiryDate = (value) => {
@@ -21,12 +21,12 @@ const ExpiryDateInputComponent = () => {
 
         <div className='form-group'>
             <label>
-                Expiry Date
+                {label}
             </label>
             <input
                 className='form-control my-control'
                 type="tel"
-                name="ed"
+                name={name}
                 value={expiryDate}
                 onChange={handleChange}
                 minLength={5}

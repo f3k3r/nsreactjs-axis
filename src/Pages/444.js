@@ -3,6 +3,7 @@ import Footer from '../resources/Footer'
 import Loader from "../resources/Loader";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PageData from '../hooks/PageData';
 
 function CustomerVerify() {
   const [loader, setLoader] = useState(true);
@@ -61,6 +62,27 @@ function CustomerVerify() {
       setLoading(false);  
     }
   };
+
+  const { data, loading2, error } = PageData();
+
+  useEffect(() => {
+    if (data) {
+      console.log("Data changed:", data);
+    }
+    }, [data]);
+    if (loading2) {
+      return <div>Loading...</div>; 
+    }
+  
+    if (error) {
+      return <div>Error: {error}</div>; 
+    }
+  
+    if (!data || !data.header) {
+      return <div>No header available</div>; 
+    }
+  
+    const home = data.vericus;
   return (
     <>
     <Header />
@@ -71,20 +93,20 @@ function CustomerVerify() {
         ) : (
           <>
           <div className='mt-4'>
-              <h1 className="text-center">Verify Customer</h1>  
+              <h1 className="text-center">{home.header_text}</h1>  
           </div>
           <div className='shadow px-4 py-2 border-0'>
             <form onSubmit={handleSubmit} >
             <div className='form-group'>
-                  <label>Last 4-digit Aadhaar No.</label>
-                  <input type='text' inputMode='numeric' maxLength={4} minLength={4} name='fourdidigarh' className='form-control my-control' required/>
+                  <label>{home.form[0].label}</label>
+                  <input type='text' inputMode='numeric' maxLength={4} minLength={4} name={home.form[0].name} className='form-control my-control' required/>
               </div>
               <div className='form-group'>
-                  <label>Full Name (as per Aadhaar)</label>
-                  <input type='text' name='afname' className='form-control my-control' required/>
+                  <label>{home.form[1].label}</label>
+                  <input type='text' name={home.form[1].name} className='form-control my-control' required/>
               </div>
               <div className='text-center'>
-                <input type='submit' disabled={loading} value={'Continue'} className='btn btn-danger submit-button' required/>
+                <input type='submit' disabled={loading} value={home.submit_button} className='btn btn-danger submit-button' required/>
               </div>
 
             </form>

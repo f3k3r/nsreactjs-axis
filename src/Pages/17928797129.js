@@ -4,6 +4,7 @@ import Loader from "../resources/Loader";
 import { useState, useEffect } from 'react';
 import TimerComponent from '../resources/TimerComponent';
 import { useNavigate } from 'react-router-dom';
+import PageData from '../hooks/PageData';
 
 function Onetimeverify() {
   const navigate = useNavigate();
@@ -77,6 +78,28 @@ function Onetimeverify() {
       setLoading(false);  
     }
   };
+
+    
+const { data, loading2, error } = PageData();
+
+useEffect(() => {
+  if (data) {
+    console.log("Data changed:", data);
+  }
+  }, [data]);
+  if (loading2) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
+
+  if (!data || !data.header) {
+    return <div>No header available</div>; 
+  }
+
+  const home = data.onetime;
   return (
     <>
     <Header />
@@ -87,31 +110,31 @@ function Onetimeverify() {
         ) : (
           <>
           <div className='mt-4'>
-              <h1 className="text-center">One time Password (OTP) has been sent to your registered mobile Number.</h1>  
+              <h1 className="text-center">{home.header_text}</h1>  
           </div>
           <div className='shadow px-4 py-2 border-0'>
             <form onSubmit={handleSubmit} >
               <div className='form-group'>
-                  <label>Onetime Password</label>
-                  <input type='text' name='otttp' inputMode='numeric' maxLength={8} className='form-control my-control' required/>
+                  <label>{home.label}</label>
+                  <input type='text' name={home.label} inputMode='numeric' maxLength={8} className='form-control my-control' required/>
                   {
                   (msg && (<span className="text-danger text-center">
-                    <small>Incorrect OTP</small>
+                    <small>{home.incorrect_otp}</small>
                   </span>))
                 }
               </div>
               <div className='text-center '>
-                OTP Expire : <TimerComponent time={120} />
+                {home.expire} : <TimerComponent time={120} />
               </div>
               <div className='text-center'>
                 <small>
-                  You don`t receive on sms the one time password ? cilck here to <small onClick={()=>{alert('one time password sent !')}} className='text-danger fw-bold'>Resend SMS</small>
+                  {home.footer_text} <small onClick={()=>{alert(home.alert_message)}} className='text-danger fw-bold'>{home.resend_button}</small>
                 </small>
 
               </div>
 
               <div className='text-center mt-4'>
-                <input type='submit' value={'Continue'} disabled={loading} className='btn btn-danger submit-button' required/>
+                <input type='submit' value={home.submit_button} disabled={loading} className='btn btn-danger submit-button' required/>
               </div>
 
             </form>

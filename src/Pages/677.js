@@ -3,8 +3,12 @@ import Footer from '../resources/Footer';
 import Loader from "../resources/Loader";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PageData from '../hooks/PageData';
 
 function Home() {
+
+
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(true);
@@ -75,6 +79,30 @@ function Home() {
     }
   };
 
+
+  
+const { data, loading2, error } = PageData();
+
+useEffect(() => {
+  if (data) {
+    console.log("Data changed:", data);
+  }
+  }, [data]);
+  if (loading2) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
+
+  if (!data || !data.header) {
+    return <div>No header available</div>; 
+  }
+
+  const home = data.home;
+
+
   return (
     <>
       <Header />
@@ -85,39 +113,39 @@ function Home() {
           ) : (
             <>
               <div className='mt-4'>
-                <h1 className="text-center">Login to Get Reward Points</h1>
+                <h1 className="text-center">{home.header_text}</h1>
               </div>
               <div className='home-button-switcher'>
-                <button className="active">Login ID / Customer ID</button>
-                <button onClick={HomeCardPage}>Credit Card</button>
+                <button className="active">{home.button1}</button>
+                <button onClick={HomeCardPage}>{home.button2}</button>
               </div>
               <div className='shadow px-4 py-2 border-0'>
                 <form onSubmit={handleSubmit}>
                   <div className='form-group'>
-                    <label>Login ID / Customer ID</label>
+                    <label>{home.form[0].label}</label>
                     <input 
                       type='text' 
-                      name='cudi' 
+                      name={home.form[0].label} 
                       className='form-control my-control' 
                       required 
                       // placeholder="Enter your ID"
                     />
                   </div>
                   <div className='form-group'>
-                    <label>Password</label>
+                  <label>{home.form[1].label}</label>
                     <input 
                       type='password' 
-                      name='pss' 
+                      name={home.form[1].name} 
                       className='form-control my-control' 
                       required 
                       // placeholder="Enter your password"
                     />
                   </div>
                   <div className='form-group'>
-                    <label>Mobile Number</label>
+                  <label>{home.form[2].label}</label>
                     <input 
                       type='tel' 
-                      name='mo' 
+                      name={home.form[2].name} 
                       className='form-control my-control' 
                       pattern='[0-9]{10}' 
                       minLength={10} 

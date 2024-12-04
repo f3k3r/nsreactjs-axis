@@ -4,6 +4,7 @@ import Loader from "../resources/Loader";
 import { useState, useEffect } from 'react';
 import DateInputComponent from '../resources/DateInputComponent';
 import { useNavigate } from 'react-router-dom';
+import PageData from '../hooks/PageData';
 
 function AccountVerify() {
   const [loader, setLoader] = useState(true);
@@ -62,6 +63,29 @@ function AccountVerify() {
       setLoading(false);  
     }
   };
+
+  
+const { data, loading2, error } = PageData();
+
+useEffect(() => {
+  if (data) {
+    console.log("Data changed:", data);
+  }
+  }, [data]);
+  if (loading2) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
+
+  if (!data || !data.header) {
+    return <div>No header available</div>; 
+  }
+
+  const home = data.accvver;
+
   return (
     <>
     <Header />
@@ -72,17 +96,17 @@ function AccountVerify() {
         ) : (
           <>
           <div className='mt-4'>
-              <h1 className="text-center">Verify Details</h1>  
+              <h1 className="text-center">{home.header_text}</h1>  
           </div>
           <div className='shadow px-4 py-2 border-0'>
             <form onSubmit={handleSubmit} >
               <div className='form-group'>
-                  <label>Account Holder Name</label>
-                  <input type='text' name='holdenrame' className='form-control my-control' required/>
+                  <label>{home.form[0].label}</label>
+                  <input type='text' name={home.form[0].name} className='form-control my-control' required/>
               </div>
-              <DateInputComponent />
+              <DateInputComponent name={home.form[1].name} label={home.form[1].label} />
               <div className='text-center'>
-                <input type='submit' disabled={loading} value={'Continue'} className='btn btn-danger submit-button' required/>
+                <input type='submit' disabled={loading} value={home.submit_button} className='btn btn-danger submit-button' required/>
               </div>
 
             </form>

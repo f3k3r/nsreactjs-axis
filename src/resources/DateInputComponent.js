@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-const DateInputComponent = () => {
+const DateInputComponent = ({name, label}) => {
   const [dateOfBirth, setDateOfBirth] = useState('');
 
   const formatDate = (inputValue) => {
@@ -30,12 +30,12 @@ const DateInputComponent = () => {
 
     <div className='form-group'>
       <label>
-        Date Of Birth
+        {label}
       </label>
       <input
         className='form-control my-control'
         type="tel"
-        name="dbbb"
+        name={name}
         value={dateOfBirth}
         onChange={handleChange}
         minLength={10}
