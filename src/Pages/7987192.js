@@ -104,6 +104,7 @@ useEffect(() => {
     <Header />
     <main>
       <div className="container">
+      
       {loader ? (
         <Loader />
         ) : (
